@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Girl Talk Podcast</title>
+
+</head>
+<link rel="stylesheet" href="style.css">
+<body>
+
+<div class="container">
+    <header id="main-header" class="main-header card">
+        <h1 class="logo-text">Girl Talk</h1>
+        <nav id="nav-container" class="header-nav">
+            <a class="nav-link" onclick="showPage('home')" data-page="home">Home</a>
+            <a class="nav-link" onclick="showPage('about')" data-page="about">About</a>
+            <a class="nav-link" onclick="showPage('bts')" data-page="bts">Behind the Scenes</a>
+        </nav>
+    </header>
+
+    <main id="content-container">
+        </main>
+
+    <template id="home-template">
+        <div id="home-page" class="home-section space-y-8">
+            <div class="card shadow-2xl">
+                <h2 class="text-5xl font-bold mb-4 logo-text" style="font-size: 3rem;">
+                    Welcome to Girl Talk
+                </h2>
+                <p style="font-size: 1.125rem; color: var(--gray-600); max-width: 800px; margin: 0 auto 2.5rem;">
+                    Hit play and join the conversation!
+                </p>
+                <div class="featured-card">
+                    <h3 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 0.75rem; color: var(--pink-500);">First Episode: idk what the title should be</h3>
+                    <p style="font-size: 0.875rem; color: var(--gray-600); margin-bottom: 1.5rem;">A conversation with the team about... (Aired: Oct 25, 2025)</p>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="about-template">
+        <div id="about-page" class="space-y-12">
+            <div class="card shadow-xl space-y-8">
+                <h2 style="font-size: 2.25rem; font-weight: 800; color: var(--pink-500); margin-bottom: 1rem; border-bottom: 4px solid #fbcfe8; padding-bottom: 0.5rem;">
+                    What is Girl Talk All About?
+                </h2>
+                <p style="font-size: 1.125rem; color: var(--gray-600); line-height: 1.6;">
+                    We created Girl Talk to be the friend you can always count on—the one who keeps it real and makes you feel seen. This is the space for honest, unfiltered chats about life, career, and the common problems we face, from the baffling cost of being a woman to the brilliant, often hilarious, logic we use to navigate it all. Join our supportive community to grow, laugh, and sip some tea together.
+                </p>
+            </div>
+            <div class="space-y-8 -mt-12">
+                <h3 style="font-size: 2.25rem; font-weight: 800; color: var(--purple-500); text-align: center; margin-bottom: 1rem; padding-top: 1rem;">
+                    Meet the Team
+                </h3> <div id="team-grid-placeholder" class="team-grid">
+                </div>
+            </div>
+            <div class=""card shadow-xl space-y-8">
+            </div>
+    </template>
+
+    <template id="bts-template">
+        <div id="bts-page" class="card shadow-xl space-y-8">
+            <h2 style="font-size: 2.25rem; font-weight: 800; color: var(--purple-500); margin-bottom: 1rem; border-bottom: 4px solid #fbcfe8; padding-bottom: 0.5rem;">
+                Behind The Scenes
+        </div>
+    </template>
+
+    <template id="team-card-template">
+        <div class="team-member">
+            <div class="card h-full" style="text-align: center; border-bottom: 4px solid #f472b6; transition: border-color 0.3s; height: 100%; display: flex; flex-direction: column; justify-content: space-between;">
+                <img class="profile-img" data-img-src="" alt="">
+                <h4 style="font-size: 1.5rem; font-weight: 700; color: var(--pink-500); margin-bottom: 0.25rem;" data-name-target></h4>
+                <p style="font-size: 1rem; font-weight: 600; color: var(--purple-500); margin-bottom: 1rem;" data-role-target></p>
+                <p style="font-size: 0.875rem; color: var(--gray-600); font-style: italic;" data-bio-target></p>
+            </div>
+        </div>
+    </template>
+
+    <script src="script.js"></script>
+</div>
+</body>
+</html>
