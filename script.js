@@ -6,32 +6,28 @@ const teamMembers = [
         name: "Shamma", 
         role: "Website Developer & Host", 
         bio: "Loves sparking meaningful conversations and ensuring every episode brings value and authenticity to our listeners.",
-        color: "f472b6", 
-        text: "SM"
+        image: "Shamma.png" 
     },
     { 
         id: 2, 
         name: "Jana", 
         role: "Content Creator & Sound Editor", 
         bio: "Passionate about creating seamless digital experiences and crafting the perfect soundscape for our conversations.",
-        color: "c084fc", 
-        text: "JA"
+        image: "Jana Barbie.png" 
     },
     { 
         id: 3, 
         name: "Hind", 
         role: "Web Specialist & Producer", 
         bio: "Combines technical expertise with creative production to make Girl Talk accessible and engaging for everyone.",
-        color: "f9a8d4", 
-        text: "HD"
+        image: "Hind.png" 
     },
     { 
         id: 4, 
         name: "Hoor", 
         role: "Creative Director & Sound Designer", 
         bio: "Oversees the creative vision and sound designing, ensuring each episode tells a compelling story.",
-        color: "a855f7", 
-        text: "HR"
+        image: "Hoor.png" 
     },
 ];
 
@@ -41,6 +37,10 @@ const AUDIO_PATHS = {
     'pink-tax': 'audio/PinkTax.mp3'
 };
 
+/**
+ * Retrieves essential elements for the audio player.
+ * @returns {Object} An object containing key player elements.
+ */
 function getEpisodeElements() {
     return {
         audioSource: document.getElementById('episode-audio-source'),
@@ -55,13 +55,18 @@ function getEpisodeElements() {
     };
 }
 
-
+/**
+ * Formats seconds into MM:SS string.
+ */
 function formatTime(seconds) {
     const min = Math.floor(seconds / 60);
     const sec = Math.floor(seconds % 60);
     return `${min}:${sec < 10 ? '0' : ''}${sec}`;
 }
 
+/**
+ * Starts the intro track and shows episode choices.
+ */
 function startIntro() {
     const { introStartWrapper, choiceButtonsWrapper, audioSource } = getEpisodeElements();
     
@@ -76,6 +81,7 @@ function startIntro() {
 
     audioSource.play().catch(e => console.error("Autoplay failed:", e));
 
+    // Optional: Pause audio if intro finishes naturally
     audioSource.addEventListener('ended', handleIntroEnd, { once: true });
 }
 
@@ -84,7 +90,9 @@ function handleIntroEnd() {
     if (audioSource) audioSource.pause();
 }
 
-
+/**
+ * Handles the selection of a main episode.
+ */
 function handleEpisodeChoice(event) {
     const episodeKey = event.currentTarget.dataset.episode;
     const { choiceButtonsWrapper, mainPlayerWrapper, audioSource, timeDisplay, progress, playBtn, pauseBtn } = getEpisodeElements();
@@ -101,17 +109,17 @@ function handleEpisodeChoice(event) {
     if (timeDisplay) timeDisplay.textContent = '0:00 / Loading...';
     if (progress) progress.style.width = '0%';
     
-
     if (playBtn) playBtn.classList.add('hidden');
     if (pauseBtn) pauseBtn.classList.remove('hidden');
-
 
     audioSource.onplaying = () => { if (playBtn) playBtn.classList.add('hidden'); if (pauseBtn) pauseBtn.classList.remove('hidden'); };
     audioSource.onpause = () => { if (playBtn) playBtn.classList.remove('hidden'); if (pauseBtn) pauseBtn.classList.add('hidden'); };
     audioSource.onended = () => { if (playBtn) playBtn.classList.remove('hidden'); if (pauseBtn) pauseBtn.classList.add('hidden'); };
 }
 
-
+/**
+ * Updates the time display and progress bar during playback.
+ */
 function updatePlayerState() {
     const { audioSource, timeDisplay, progress } = getEpisodeElements();
     if (!audioSource || !timeDisplay || !progress) return;
@@ -126,7 +134,9 @@ function updatePlayerState() {
     }
 }
 
-
+/**
+ * Resets the player state back to the 'Play Intro' button.
+ */
 function resetPodcastPlayer() {
     const { introStartWrapper, choiceButtonsWrapper, mainPlayerWrapper, audioSource, timeDisplay, progress } = getEpisodeElements();
     
@@ -145,8 +155,15 @@ function resetPodcastPlayer() {
     if (progress) progress.style.width = '0%';
 }
 
+/**
+ * Attaches event listeners for all audio controls.
+ * This is called only when the 'podcast' page is rendered.
+ */
 function initializeAudioControls() {
     const { audioSource, playBtn, pauseBtn, startOverBtn } = getEpisodeElements();
+    
+    // Ensure all elements exist before attaching listeners
+    if (!audioSource) return;
     
     const introStartBtn = document.getElementById('intro-start-btn');
 
@@ -158,17 +175,19 @@ function initializeAudioControls() {
 
     if (startOverBtn) startOverBtn.addEventListener('click', resetPodcastPlayer);
 
-    if (audioSource) {
-        if (playBtn) playBtn.addEventListener('click', () => audioSource.play());
-        if (pauseBtn) pauseBtn.addEventListener('click', () => audioSource.pause());
-        audioSource.addEventListener('timeupdate', updatePlayerState);
+    if (playBtn) playBtn.addEventListener('click', () => audioSource.play());
+    if (pauseBtn) pauseBtn.addEventListener('click', () => audioSource.pause());
+    
+    audioSource.addEventListener('timeupdate', updatePlayerState);
 
-        if (playBtn) playBtn.classList.remove('hidden');
-        if (pauseBtn) pauseBtn.classList.add('hidden');
-    }
+    // Set initial visible state for controls
+    if (playBtn) playBtn.classList.remove('hidden');
+    if (pauseBtn) pauseBtn.classList.add('hidden');
 }
 
-
+/**
+ * Utility function to clone a template.
+ */
 function getTemplateClone(id) {
     const template = document.getElementById(id);
     if (!template) {
@@ -178,6 +197,9 @@ function getTemplateClone(id) {
     return template.content.cloneNode(true);
 }
 
+/**
+ * Renders the 'About' page, dynamically inserting team member data.
+ */
 function renderAboutPage() {
     const pageClone = getTemplateClone('about-template');
     const teamGrid = pageClone.querySelector('#team-grid-placeholder');
@@ -193,7 +215,8 @@ function renderAboutPage() {
             cardClone.querySelector('[data-bio-target]').textContent = member.bio;
 
             const img = cardClone.querySelector('.profile-img');
-            img.src = `https://placehold.co/150x150/${member.color}/ffffff?text=${member.text}`;
+            // Use the actual image path
+            img.src = `photo/${member.image}`;
             img.alt = `${member.name} - ${member.role}`;
 
             teamCardsFragment.appendChild(cardClone);
@@ -206,18 +229,37 @@ function renderAboutPage() {
     return pageClone;
 }
 
+/**
+ * Renders the 'Behind The Scenes' page.
+ */
 function renderBTSPage() {
     return getTemplateClone('bts-template');
 }
 
+/**
+ * Renders the 'Podcast' page.
+ */
+function renderPodcastPage() {
+    return getTemplateClone('podcast-template');
+}
+
+/**
+ * Main navigation handler.
+ * @param {string} pageName - The name of the page to show ('home', 'podcast', 'about', 'bts').
+ */
 function showPage(pageName) {
     const homePageContent = document.getElementById('home-page');
     let shouldLoadAudioControls = false;
     let contentNode;
+    
     switch(pageName) {
         case 'home':
             contentNode = homePageContent
-            shouldLoadAudioControls = true;
+            shouldLoadAudioControls = false; // Player is no longer here
+            break;
+        case 'podcast':
+            contentNode = renderPodcastPage();
+            shouldLoadAudioControls = true; // Player is on this page
             break;
         case 'about':
             contentNode = renderAboutPage();
@@ -227,27 +269,38 @@ function showPage(pageName) {
             break;
         default:
             contentNode = homePageContent;
-            shouldLoadAudioControls = true;
+            shouldLoadAudioControls = false;
         }
     
-    
-
     if (!contentContainer) {
         console.error("Content container not found in HTML.");
         return; 
     }
     
-    if (contentContainer.firstChild !== contentNode){
+    // Logic to swap content (re-inserting the original 'home-page' element if navigating back to home)
+    if (pageName === 'home') {
+        contentContainer.innerHTML = ''; 
+        contentContainer.appendChild(homePageContent);
+        homePageContent.style.display = 'block'; 
+    } else if (contentContainer.firstChild !== contentNode){
         contentContainer.innerHTML = '';
         contentContainer.appendChild(contentNode);
     }
 
+    // Initialize audio controls ONLY if the player is present (on the podcast page)
     if (shouldLoadAudioControls){
+        // Ensure audio is reset and controls are initialized every time the page loads
+        const { audioSource } = getEpisodeElements();
+        if (audioSource) {
+            audioSource.pause();
+            audioSource.src = AUDIO_PATHS.intro; 
+            audioSource.load();
+            audioSource.currentTime = 0;
+        }
         initializeAudioControls ();
     }
     
-
-   
+    // Update active navigation link styling
     document.querySelectorAll('.nav-link').forEach(link => {
         link.classList.remove('active');
         if (link.getAttribute('data-page') === pageName) {
@@ -257,11 +310,13 @@ function showPage(pageName) {
 }
 
 
+/**
+ * Adds a shadow to the header when the user scrolls down.
+ */
 function handleScrollShadow() {
     const header = document.getElementById('main-header');
     if (!header) return; 
     
-
     if (window.scrollY > 10) {
         header.classList.add('header-scrolled');
     } else {
@@ -273,15 +328,6 @@ function handleScrollShadow() {
 document.addEventListener('scroll', handleScrollShadow);
 
 document.addEventListener('DOMContentLoaded',() => {
-    initializeAudioControls();
+    // Set 'home' as the default active page on load
     document.querySelector('.nav-link[data-page="home"]').classList.add('active');
-
-    const choiceWrapper = document.getElementById('choice-buttons-wrapper');
-    const delayInMilliseconds = 35000; 
-    
-    if (choiceWrapper) {
-        setTimeout(() => {
-            choiceWrapper.classList.add('visible');
-        }, delayInMilliseconds);
-    }
 });
