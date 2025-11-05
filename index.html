@@ -4,110 +4,149 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Girl Talk Podcast - Real Conversations, Real Women</title>
+
+  <!-- CSS -->
   <link rel="stylesheet" href="style.css"/>
+
+  <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
+
 <body>
   <div class="container">
+
+    <!-- Header Section: Logo and Navigation -->
     <div class="top-spacer-wrapper">
       <header id="main-header" class="main-header">
         <div class="header-content">
+          
+          <!-- Logo -->
           <div class="logo-container">
             <h1 class="logo-text">Girl Talk</h1>
             <span class="tagline">Real Conversations, Real Women</span>
           </div>
 
+          <!-- Navigation -->
           <div class="nav-wrapper">
             <nav id="nav-container" class="header-nav">
-              <a class="nav-link" onclick="showPage('home')" data-page="home">Home</a>
-              <a class="nav-link" onclick="showPage('podcast')" data-page="podcast">Podcast</a>
-              <a class="nav-link" onclick="showPage('about')" data-page="about">About</a>
-              <a class="nav-link" onclick="showPage('bts')" data-page="bts">Behind the Scenes</a>
+              <a class="nav-link" data-page="home" onclick="showPage('home')">Home</a>
+              <a class="nav-link" data-page="podcast" onclick="showPage('podcast')">Podcast</a>
+              <a class="nav-link" data-page="about" onclick="showPage('about')">About</a>
+              <a class="nav-link" data-page="bts" onclick="showPage('bts')">Behind the Scenes</a>
             </nav>
           </div>
+
         </div>
       </header>
     </div>
 
+    <!-- Page Container -->
     <main id="content-container">
-      <!-- HOME (default) -->
-      <div id="home-page" class="page-content">
-        <section class="hero-section">
-          <div class="hero-content home-hero-content">
-            <h1 class="hero-title">Welcome to <span class="gradient-text">Girl Talk</span></h1>
-            <p class="hero-subtitle">Your safe space for honest conversations about life, career, and everything in between.</p>
-          </div>
-        </section>
-      </div>
-    </main>
 
-    <!-- ABOUT PAGE -->
-    <template id="about-template">
-      <div id="about-page" class="page-content">
-        <section class="mission-section">
-          <div class="section-header">
-            <h2>Our Mission</h2>
-          </div>
-          <div class="mission-card">
-            <div class="mission-icon">💝</div>
-            <p class="mission-text">
-              We created <strong>Girl Talk</strong> to be the friend you can always count on, the one who keeps it real and makes you feel seen. This is your space for honest, unfiltered chats about life, career, and the common problems we face.
+      <!-- Home Page -->
+      <div id="home-page" class="page-content">
+
+        <!-- Home Hero Section with Background -->
+        <section class="home-hero-section">
+          <div class="home-hero-overlay"></div>
+
+          <div class="home-hero-content">
+            <h1 class="hero-title home-big-title">
+              Welcome to <span class="gradient-text">Girl Talk</span>
+            </h1>
+
+            <p class="hero-subtitle home-big-subtitle">
+              Your safe space for honest conversations about life, career, and everything in between.
             </p>
           </div>
         </section>
 
+      </div>
+    </main>
+
+    <!-- About Template -->
+    <template id="about-template">
+      <div id="about-page" class="page-content">
+
+        <!-- Mission Section -->
+        <section class="mission-section">
+          <div class="section-header">
+            <h2>Our Mission</h2>
+          </div>
+
+          <div class="mission-card">
+            <div class="mission-icon">💝</div>
+            <p class="mission-text">
+              We created Girl Talk to be the friend you can always count on, the one who keeps it real and makes you feel seen.
+            </p>
+          </div>
+        </section>
+
+        <!-- Team Section -->
         <section class="team-section">
           <div class="section-header">
             <h2>Meet the Team</h2>
             <p>The voices behind the conversation</p>
           </div>
+
           <div id="team-grid-placeholder" class="team-grid"></div>
         </section>
+
       </div>
     </template>
 
-    <!-- PODCAST PAGE -->
+    <!-- Podcast Template -->
     <template id="podcast-template">
       <div id="podcast-page" class="page-content">
 
-        <!-- FULL-BLEED HERO WITH Background.png -->
+        <!-- Podcast Hero with Background -->
         <section class="podcast-hero-full">
           <div class="podcast-hero-overlay"></div>
+
           <div class="podcast-hero-content">
             <h1 class="hero-title podcast-big-title">Latest Episode:<br>Choose Your Focus</h1>
-            <p class="hero-subtitle podcast-big-subtitle">Dive into our newest conversation!</p>
+            <p class="hero-subtitle podcast-big-subtitle">Dive into our newest conversation.</p>
           </div>
         </section>
 
-        <!-- FEATURED EPISODE CARD -->
+        <!-- Featured Episode -->
         <section class="featured-episode">
           <div class="episode-card">
+
+            <!-- Artwork -->
             <div class="episode-artwork">
               <div class="artwork-placeholder">🎧</div>
             </div>
+
+            <!-- Episode Info -->
             <div class="episode-info">
               <h3>The First Conversation: Choose Your Focus</h3>
+
               <div class="episode-meta">
                 <span class="episode-date">Aired: Oct 25, 2025</span>
               </div>
+
               <p class="episode-description">
-                For our first episode, you get to decide what we talk about! Listen to a talk about Girl Math, or explore the financial realities of Pink Tax.
+                For our first episode, you get to decide what we talk about.
               </p>
 
-              <!-- STEP 1: INTRO -->
+              <!-- Play Intro Button -->
               <div id="intro-start-wrapper" class="player-controls">
                 <button id="intro-start-btn" class="cta-button">Play Episode Intro ▶️</button>
               </div>
 
-              <!-- STEP 2: CHOICES (hidden until intro starts) -->
+              <!-- Choice Buttons -->
               <div id="choice-buttons-wrapper" class="player-controls">
                 <button class="control-btn choice-btn" data-episode="girl-math">Girl Math</button>
                 <button class="control-btn choice-btn" data-episode="pink-tax">Pink Tax</button>
               </div>
 
-              <!-- STEP 3: MAIN PLAYER (hidden until a choice is made) -->
+              <!-- Audio Player -->
               <div id="main-player-wrapper" class="audio-player hidden">
-                <div class="progress-bar"><div class="progress"></div></div>
+                <div class="progress-bar">
+                  <div class="progress"></div>
+                </div>
+
                 <div class="player-controls">
                   <button id="play-btn" class="control-btn">▶️ Play</button>
                   <button id="pause-btn" class="control-btn hidden">⏸️ Pause</button>
@@ -115,59 +154,62 @@
                   <span id="time-display" class="time-display">0:00 / 0:00</span>
                 </div>
               </div>
+
             </div>
           </div>
         </section>
 
-        <!-- (NOTE: Episode list removed as requested) -->
-
       </div>
     </template>
 
-    <!-- BTS PAGE -->
+    <!-- BTS Template -->
     <template id="bts-template">
       <div id="bts-page" class="page-content">
+
         <section class="bts-section">
           <div class="section-header">
             <h2>Behind The Scenes</h2>
-            <p>Listen to the bloopers in today's episode!</p>
+            <p>Listen to the bloopers in today's episode.</p>
           </div>
 
           <div class="bts-content">
             <div class="bts-card single-bts-card">
               <div class="bts-media-wrapper">
                 <span class="bts-icon">🎙️</span>
-                <h3 style="margin-bottom: 0.5rem; color: var(--purple-900);">Blooper Reel: Outtakes & Fun</h3>
+
+                <h3 style="margin-bottom: 0.5rem; color: var(--purple-900);">Blooper Reel</h3>
+
                 <audio controls class="bts-audio-player">
                   <source src="audio/Bloopers.mp3" type="audio/mpeg"/>
                 </audio>
+
               </div>
             </div>
           </div>
         </section>
+
       </div>
     </template>
+
   </div>
 
-  <!-- TEAM CARD TEMPLATE -->
+  <!-- Team Card Template -->
   <template id="team-card-template">
     <div class="team-member">
       <div class="member-card">
-        <div class="member-image-container">
-          <img class="profile-img" data-img-src="" alt="">
-        </div>
-        <div class="member-info">
-          <h4 data-name-target class="member-name"></h4>
-          <p data-role-target class="member-role"></p>
-          <p data-bio-target class="member-bio"></p>
-        </div>
+        <img class="profile-img" alt="">
+        <h4 data-name-target class="member-name"></h4>
+        <p data-role-target class="member-role"></p>
+        <p data-bio-target class="member-bio"></p>
       </div>
     </div>
   </template>
 
-  <!-- AUDIO ELEMENT (shared) -->
+  <!-- Global Audio Element -->
   <audio id="episode-audio-source" src="audio/Intro final.mp3"></audio>
 
+  <!-- JavaScript -->
   <script src="script.js"></script>
+
 </body>
 </html>
