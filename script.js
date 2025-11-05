@@ -1,30 +1,30 @@
-/* Team data */
+const contentContainer = document.getElementById('content-container');
+
 const teamMembers = [
-  { name: "Shamma", role: "Website Developer & Host", bio: "Loves sparking meaningful conversations.", image: "Shamma.png" },
-  { name: "Jana", role: "Content Creator & Sound Editor", bio: "Creates seamless digital experiences.", image: "Jana Barbie.png" },
-  { name: "Hind", role: "Web Specialist & Producer", bio: "Combines tech with creative work.", image: "Hind.png" },
-  { name: "Hoor", role: "Creative Director & Sound Designer", bio: "Ensures each episode tells a story.", image: "Hoor.png" }
+  { id: 1, name: "Shamma", role: "Website Developer & Host", bio: "Loves sparking meaningful conversations.", image: "Shamma.png" },
+  { id: 2, name: "Jana", role: "Content Creator & Sound Editor", bio: "Creates seamless digital experiences.", image: "Jana Barbie.png" },
+  { id: 3, name: "Hind", role: "Web Specialist & Producer", bio: "Combines technical expertise with creativity.", image: "Hind.png" },
+  { id: 4, name: "Hoor", role: "Creative Director & Sound Designer", bio: "Shapes the sound and mood of each episode.", image: "Hoor.png" }
 ];
 
-/* Audio paths */
 const AUDIO_PATHS = {
-  intro: 'audio/Intro final.mp3',
-  'girl-math': 'audio/Girl Math.mp3',
-  'pink-tax': 'audio/PinkTax.mp3'
+  intro: "audio/Intro final.mp3",
+  "girl-math": "audio/Girl Math.mp3",
+  "pink-tax": "audio/PinkTax.mp3"
 };
 
-/* Helper: get all audio elements */
+/* Audio DOM references */
 function getEpisodeElements() {
   return {
-    audioSource: document.getElementById('episode-audio-source'),
-    introStartWrapper: document.getElementById('intro-start-wrapper'),
-    choiceButtonsWrapper: document.getElementById('choice-buttons-wrapper'),
-    mainPlayerWrapper: document.getElementById('main-player-wrapper'),
-    timeDisplay: document.getElementById('time-display'),
-    progress: document.querySelector('#main-player-wrapper .progress'),
-    playBtn: document.getElementById('play-btn'),
-    pauseBtn: document.getElementById('pause-btn'),
-    startOverBtn: document.getElementById('start-over-btn')
+    audioSource: document.getElementById("episode-audio-source"),
+    introStartWrapper: document.getElementById("intro-start-wrapper"),
+    choiceButtonsWrapper: document.getElementById("choice-buttons-wrapper"),
+    mainPlayerWrapper: document.getElementById("main-player-wrapper"),
+    timeDisplay: document.getElementById("time-display"),
+    progress: document.querySelector("#main-player-wrapper .progress"),
+    playBtn: document.getElementById("play-btn"),
+    pauseBtn: document.getElementById("pause-btn"),
+    startOverBtn: document.getElementById("start-over-btn"),
   };
 }
 
@@ -32,142 +32,149 @@ function getEpisodeElements() {
 function formatTime(seconds) {
   const min = Math.floor(seconds / 60);
   const sec = Math.floor(seconds % 60);
-  return `${min}:${sec < 10 ? '0' : ''}${sec}`;
+  return `${min}:${sec < 10 ? "0" : ""}${sec}`;
 }
 
-/* Play intro */
+/* Start intro audio */
 function startIntro() {
-  const { introStartWrapper, choiceButtonsWrapper, audioSource } = getEpisodeElements();
+  const { audioSource, introStartWrapper, choiceButtonsWrapper } = getEpisodeElements();
+
+  introStartWrapper.classList.add("hidden");
+  choiceButtonsWrapper.classList.add("visible");
+
   audioSource.src = AUDIO_PATHS.intro;
   audioSource.currentTime = 0;
   audioSource.play();
-
-  introStartWrapper.classList.add('hidden');
-  choiceButtonsWrapper.classList.add('visible');
-
-  audioSource.addEventListener('ended', () => audioSource.pause(), { once: true });
 }
 
-/* Handle episode choice */
+/* Selecting Girl Math or Pink Tax */
 function handleEpisodeChoice(event) {
   const episodeKey = event.currentTarget.dataset.episode;
-  const { choiceButtonsWrapper, mainPlayerWrapper, audioSource, timeDisplay, progress, playBtn, pauseBtn } = getEpisodeElements();
+  const { audioSource, choiceButtonsWrapper, mainPlayerWrapper, playBtn, pauseBtn } = getEpisodeElements();
 
-  choiceButtonsWrapper.classList.remove('visible');
-  mainPlayerWrapper.classList.remove('hidden');
+  choiceButtonsWrapper.classList.remove("visible");
+  mainPlayerWrapper.classList.remove("hidden");
 
   audioSource.src = AUDIO_PATHS[episodeKey];
-  audioSource.load();
   audioSource.play();
 
-  playBtn.classList.add('hidden');
-  pauseBtn.classList.remove('hidden');
-
-  audioSource.onplaying = () => { playBtn.classList.add('hidden'); pauseBtn.classList.remove('hidden'); };
-  audioSource.onpause = () => { playBtn.classList.remove('hidden'); pauseBtn.classList.add('hidden'); };
+  playBtn.classList.add("hidden");
+  pauseBtn.classList.remove("hidden");
 }
 
-/* Update time+progress */
+/* Update progress bar */
 function updatePlayerState() {
-  const { audioSource, timeDisplay, progress } = getEpisodeElements();
+  const { audioSource, progress, timeDisplay } = getEpisodeElements();
   if (!audioSource.duration) return;
-  timeDisplay.textContent = `${formatTime(audioSource.currentTime)} / ${formatTime(audioSource.duration)}`;
+
   progress.style.width = `${(audioSource.currentTime / audioSource.duration) * 100}%`;
+  timeDisplay.textContent = `${formatTime(audioSource.currentTime)} / ${formatTime(audioSource.duration)}`;
 }
 
 /* Reset player */
 function resetPodcastPlayer() {
-  const { introStartWrapper, choiceButtonsWrapper, mainPlayerWrapper, audioSource, timeDisplay, progress } = getEpisodeElements();
+  const {
+    audioSource,
+    introStartWrapper,
+    choiceButtonsWrapper,
+    mainPlayerWrapper,
+    progress,
+    timeDisplay
+  } = getEpisodeElements();
 
   audioSource.pause();
   audioSource.src = AUDIO_PATHS.intro;
-  audioSource.currentTime = 0;
 
-  introStartWrapper.classList.remove('hidden');
-  choiceButtonsWrapper.classList.remove('visible');
-  mainPlayerWrapper.classList.add('hidden');
+  introStartWrapper.classList.remove("hidden");
+  choiceButtonsWrapper.classList.remove("visible");
+  mainPlayerWrapper.classList.add("hidden");
 
-  timeDisplay.textContent = '0:00 / 0:00';
-  progress.style.width = '0%';
+  progress.style.width = "0%";
+  timeDisplay.textContent = "0:00 / 0:00";
 }
 
-/* Init audio buttons */
+/* Initialize audio listeners */
 function initializeAudioControls() {
-  const { audioSource, playBtn, pauseBtn, startOverBtn } = getEpisodeElements();
+  const {
+    audioSource,
+    playBtn,
+    pauseBtn,
+    startOverBtn
+  } = getEpisodeElements();
 
-  document.getElementById('intro-start-btn').addEventListener('click', startIntro);
-  document.querySelectorAll('.choice-btn').forEach(btn => btn.addEventListener('click', handleEpisodeChoice));
+  document.getElementById("intro-start-btn").onclick = startIntro;
 
-  startOverBtn.addEventListener('click', resetPodcastPlayer);
-  playBtn.addEventListener('click', () => audioSource.play());
-  pauseBtn.addEventListener('click', () => audioSource.pause());
+  document.querySelectorAll(".choice-btn").forEach(btn => {
+    btn.addEventListener("click", handleEpisodeChoice);
+  });
 
-  audioSource.addEventListener('timeupdate', updatePlayerState);
+  playBtn.onclick = () => audioSource.play();
+  pauseBtn.onclick = () => audioSource.pause();
+  startOverBtn.onclick = resetPodcastPlayer;
+
+  audioSource.addEventListener("timeupdate", updatePlayerState);
+
+  audioSource.onplaying = () => {
+    playBtn.classList.add("hidden");
+    pauseBtn.classList.remove("hidden");
+  };
+
+  audioSource.onpause = () => {
+    playBtn.classList.remove("hidden");
+    pauseBtn.classList.add("hidden");
+  };
 }
 
-/* Render About page */
-function renderAboutPage() {
-  const page = document.getElementById('about-template').content.cloneNode(true);
-  const teamGrid = page.querySelector('#team-grid-placeholder');
+/* Build About Page */
+function getTemplateClone(id) {
+  return document.getElementById(id).content.cloneNode(true);
+}
 
-  teamMembers.forEach(member => {
-    const card = document.getElementById('team-card-template').content.cloneNode(true);
-    card.querySelector('[data-name-target]').textContent = member.name;
-    card.querySelector('[data-role-target]').textContent = member.role;
-    card.querySelector('[data-bio-target]').textContent = member.bio;
-    card.querySelector('.profile-img').src = `photo/${member.image}`;
-    teamGrid.appendChild(card);
+function renderAboutPage() {
+  const page = getTemplateClone("about-template");
+  const grid = page.querySelector("#team-grid-placeholder");
+
+  grid.innerHTML = "";
+  teamMembers.forEach(m => {
+    const card = getTemplateClone("team-card-template");
+    card.querySelector("[data-name-target]").textContent = m.name;
+    card.querySelector("[data-role-target]").textContent = m.role;
+    card.querySelector("[data-bio-target]").textContent = m.bio;
+    card.querySelector(".profile-img").src = `photo/${m.image}`;
+    grid.appendChild(card);
   });
 
   return page;
 }
 
-/* Page navigation */
+/* Page Routing */
 function renderPodcastPage() {
-  return document.getElementById('podcast-template').content.cloneNode(true);
+  const clone = getTemplateClone("podcast-template");
+  setTimeout(initializeAudioControls, 50);
+  return clone;
 }
 
 function renderBTSPage() {
-  return document.getElementById('bts-template').content.cloneNode(true);
+  return getTemplateClone("bts-template");
 }
 
-function showPage(pageName) {
-  const contentContainer = document.getElementById('content-container');
-  const homePageContent = document.getElementById('home-page');
-  let contentNode;
-  let loadAudio = false;
+function showPage(page) {
+  let node = null;
 
-  if (pageName === 'home') {
-    contentNode = homePageContent;
-  } else if (pageName === 'podcast') {
-    contentNode = renderPodcastPage();
-    loadAudio = true;
-  } else if (pageName === 'about') {
-    contentNode = renderAboutPage();
-  } else if (pageName === 'bts') {
-    contentNode = renderBTSPage();
-  }
+  if (page === "home") node = document.getElementById("home-page");
+  if (page === "podcast") node = renderPodcastPage();
+  if (page === "about") node = renderAboutPage();
+  if (page === "bts") node = renderBTSPage();
 
-  contentContainer.innerHTML = '';
-  contentContainer.appendChild(contentNode);
+  contentContainer.innerHTML = "";
+  contentContainer.appendChild(node);
 
-  if (loadAudio) initializeAudioControls();
-
-  document.querySelectorAll('.nav-link').forEach(link => {
-    link.classList.remove('active');
-    if (link.dataset.page === pageName) link.classList.add('active');
+  document.querySelectorAll(".nav-link").forEach(a => {
+    a.classList.remove("active");
+    if (a.dataset.page === page) a.classList.add("active");
   });
 }
 
-/* Header shadow */
-function handleScrollShadow() {
-  const header = document.getElementById('main-header');
-  if (window.scrollY > 10) header.classList.add('header-scrolled');
-  else header.classList.remove('header-scrolled');
-}
-document.addEventListener('scroll', handleScrollShadow);
-
-/* Default active tab */
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelector('.nav-link[data-page="home"]').classList.add('active');
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelector('.nav-link[data-page="home"]').classList.add("active");
 });
