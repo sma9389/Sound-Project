@@ -64,7 +64,7 @@
           <div class="mission-card">
             <div class="mission-icon">💝</div>
             <p class="mission-text">
-              We created Girl Talk to be a friend you can count on, filled with honest and relatable discussions.
+              We created <strong>Girl Talk</strong> to be the friend you can always count on, the one who keeps it real and makes you feel seen. This is your space for honest, unfiltered chats about life, career, and the common problems we face.
             </p>
           </div>
         </section>
@@ -76,7 +76,6 @@
           </div>
 
           <div id="team-grid-placeholder" class="team-grid"></div>
-
         </section>
 
       </div>
@@ -110,7 +109,7 @@
               </div>
 
               <p class="episode-description">
-                Choose whether we discuss Girl Math or break down the Pink Tax.
+                For our first episode, you get to decide what we talk about. Listen to Girl Math, or explore the financial realities of Pink Tax.
               </p>
 
               <!-- Start Intro -->
@@ -162,7 +161,7 @@
             <div class="bts-card single-bts-card">
               <div class="bts-media-wrapper">
                 <span class="bts-icon">🎙️</span>
-                <h3>Bloopers</h3>
+                <h3 style="margin-bottom: 0.5rem; color: var(--purple-900);">Blooper Reel: Outtakes & Fun</h3>
                 <audio controls class="bts-audio-player">
                   <source src="audio/Bloopers.mp3" type="audio/mpeg"/>
                 </audio>
@@ -180,15 +179,20 @@
   <template id="team-card-template">
     <div class="team-member">
       <div class="member-card">
-        <img class="profile-img" data-img-src="" alt="">
-        <h4 data-name-target class="member-name"></h4>
-        <p data-role-target class="member-role"></p>
-        <p data-bio-target class="member-bio"></p>
+        <div class="member-image-container">
+          <img class="profile-img" data-img-src="" alt="">
+        </div>
+        <div class="member-info">
+          <h4 data-name-target class="member-name"></h4>
+          <p data-role-target class="member-role"></p>
+          <p data-bio-target class="member-bio"></p>
+        </div>
       </div>
     </div>
   </template>
 
-  <audio id="episode-audio-source"></audio>
+  <!-- Shared audio element -->
+  <audio id="episode-audio-source" src="audio/Intro final.mp3"></audio>
 
   <script src="script.js"></script>
 </body>
