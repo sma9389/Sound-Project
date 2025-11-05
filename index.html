@@ -11,12 +11,12 @@
 <body>
   <div class="container">
 
-    <!-- Header: logo and navigation -->
+    <!-- Header -->
     <div class="top-spacer-wrapper">
       <header id="main-header" class="main-header">
         <div class="header-content">
 
-          <!-- Brand -->
+          <!-- Logo -->
           <div class="logo-container">
             <h1 class="logo-text">Girl Talk</h1>
             <span class="tagline">Real Conversations, Real Women</span>
@@ -36,10 +36,10 @@
       </header>
     </div>
 
-    <!-- Main content container -->
+    <!-- Main content -->
     <main id="content-container">
 
-      <!-- Home page -->
+      <!-- Home Page -->
       <div id="home-page" class="page-content">
         <section class="home-hero-full">
           <div class="home-hero-overlay"></div>
@@ -52,7 +52,7 @@
 
     </main>
 
-    <!-- About page template -->
+    <!-- About Page -->
     <template id="about-template">
       <div id="about-page" class="page-content">
 
@@ -60,10 +60,11 @@
           <div class="section-header">
             <h2>Our Mission</h2>
           </div>
+
           <div class="mission-card">
             <div class="mission-icon">💝</div>
             <p class="mission-text">
-              We created Girl Talk to be the friend you can always count on. This is your space for honest chats about life, career, and everything in between.
+              We created Girl Talk to be a friend you can count on, filled with honest and relatable discussions.
             </p>
           </div>
         </section>
@@ -73,17 +74,19 @@
             <h2>Meet the Team</h2>
             <p>The voices behind the conversation</p>
           </div>
+
           <div id="team-grid-placeholder" class="team-grid"></div>
+
         </section>
 
       </div>
     </template>
 
-    <!-- Podcast page template -->
+    <!-- Podcast Page -->
     <template id="podcast-template">
       <div id="podcast-page" class="page-content">
 
-        <!-- Full hero background -->
+        <!-- Hero Background -->
         <section class="podcast-hero-full">
           <div class="podcast-hero-overlay"></div>
           <div class="podcast-hero-content">
@@ -92,7 +95,7 @@
           </div>
         </section>
 
-        <!-- Featured episode -->
+        <!-- Featured Episode -->
         <section class="featured-episode">
           <div class="episode-card">
 
@@ -105,13 +108,14 @@
               <div class="episode-meta">
                 <span class="episode-date">Aired: Oct 25, 2025</span>
               </div>
+
               <p class="episode-description">
-                For our first episode, you get to choose the topic. Select between Girl Math or the Pink Tax.
+                Choose whether we discuss Girl Math or break down the Pink Tax.
               </p>
 
-              <!-- Intro -->
+              <!-- Start Intro -->
               <div id="intro-start-wrapper" class="player-controls">
-                <button id="intro-start-btn" class="cta-button">Play Episode Intro</button>
+                <button id="intro-start-btn" class="cta-button">Play Episode Intro ▶️</button>
               </div>
 
               <!-- Choices -->
@@ -120,13 +124,14 @@
                 <button class="control-btn choice-btn" data-episode="pink-tax">Pink Tax</button>
               </div>
 
-              <!-- Audio Player -->
+              <!-- Main Player -->
               <div id="main-player-wrapper" class="audio-player hidden">
                 <div class="progress-bar"><div class="progress"></div></div>
+
                 <div class="player-controls">
-                  <button id="play-btn" class="control-btn">Play</button>
-                  <button id="pause-btn" class="control-btn hidden">Pause</button>
-                  <button id="start-over-btn" class="control-btn">Start Over</button>
+                  <button id="play-btn" class="control-btn">▶️ Play</button>
+                  <button id="pause-btn" class="control-btn hidden">⏸️ Pause</button>
+                  <button id="start-over-btn" class="control-btn">🔄 Start Over</button>
                   <span id="time-display" class="time-display">0:00 / 0:00</span>
                 </div>
               </div>
@@ -138,10 +143,11 @@
       </div>
     </template>
 
-    <!-- BTS page template (with background hero) -->
+    <!-- Behind The Scenes Page -->
     <template id="bts-template">
       <div id="bts-page" class="page-content">
 
+        <!-- Hero Background -->
         <section class="bts-hero-full">
           <div class="bts-hero-overlay"></div>
           <div class="bts-hero-content">
@@ -150,6 +156,7 @@
           </div>
         </section>
 
+        <!-- BTS Audio Section -->
         <section class="bts-section">
           <div class="bts-content">
             <div class="bts-card single-bts-card">
@@ -169,26 +176,20 @@
 
   </div>
 
-  <!-- Team card template -->
+  <!-- Team Card Template -->
   <template id="team-card-template">
     <div class="team-member">
       <div class="member-card">
-        <div class="member-image-container">
-          <img class="profile-img" data-img-src="" alt="">
-        </div>
-        <div class="member-info">
-          <h4 data-name-target class="member-name"></h4>
-          <p data-role-target class="member-role"></p>
-          <p data-bio-target class="member-bio"></p>
-        </div>
+        <img class="profile-img" data-img-src="" alt="">
+        <h4 data-name-target class="member-name"></h4>
+        <p data-role-target class="member-role"></p>
+        <p data-bio-target class="member-bio"></p>
       </div>
     </div>
   </template>
 
-  <!-- Global audio element -->
-  <audio id="episode-audio-source" src="audio/Intro final.mp3"></audio>
+  <audio id="episode-audio-source"></audio>
 
-  <!-- JS -->
   <script src="script.js"></script>
 </body>
 </html>
