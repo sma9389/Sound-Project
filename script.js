@@ -1,22 +1,19 @@
-/* Main Content Container */
-const contentContainer = document.getElementById('content-container');
-
-/* Team Members Data */
+/* Team data */
 const teamMembers = [
-  { id: 1, name: "Shamma", role: "Website Developer & Host", bio: "Loves sparking meaningful conversations and ensuring every episode brings value and authenticity.", image: "Shamma.png" },
-  { id: 2, name: "Jana", role: "Content Creator & Sound Editor", bio: "Passionate about creating seamless digital experiences and crafting perfect sound.", image: "Jana Barbie.png" },
-  { id: 3, name: "Hind", role: "Web Specialist & Producer", bio: "Combines technical expertise with creative production.", image: "Hind.png" },
-  { id: 4, name: "Hoor", role: "Creative Director & Sound Designer", bio: "Ensures each episode tells a compelling story.", image: "Hoor.png" },
+  { name: "Shamma", role: "Website Developer & Host", bio: "Loves sparking meaningful conversations.", image: "Shamma.png" },
+  { name: "Jana", role: "Content Creator & Sound Editor", bio: "Creates seamless digital experiences.", image: "Jana Barbie.png" },
+  { name: "Hind", role: "Web Specialist & Producer", bio: "Combines tech with creative work.", image: "Hind.png" },
+  { name: "Hoor", role: "Creative Director & Sound Designer", bio: "Ensures each episode tells a story.", image: "Hoor.png" }
 ];
 
-/* Audio Paths */
+/* Audio paths */
 const AUDIO_PATHS = {
   intro: 'audio/Intro final.mp3',
   'girl-math': 'audio/Girl Math.mp3',
   'pink-tax': 'audio/PinkTax.mp3'
 };
 
-/* Extract Audio Elements */
+/* Helper: get all audio elements */
 function getEpisodeElements() {
   return {
     audioSource: document.getElementById('episode-audio-source'),
@@ -31,29 +28,27 @@ function getEpisodeElements() {
   };
 }
 
-/* Format Time to mm:ss */
+/* Format time */
 function formatTime(seconds) {
   const min = Math.floor(seconds / 60);
   const sec = Math.floor(seconds % 60);
   return `${min}:${sec < 10 ? '0' : ''}${sec}`;
 }
 
-/* Start Intro */
+/* Play intro */
 function startIntro() {
   const { introStartWrapper, choiceButtonsWrapper, audioSource } = getEpisodeElements();
-
   audioSource.src = AUDIO_PATHS.intro;
-  audioSource.load();
   audioSource.currentTime = 0;
+  audioSource.play();
 
   introStartWrapper.classList.add('hidden');
   choiceButtonsWrapper.classList.add('visible');
 
-  audioSource.play().catch(() => {});
   audioSource.addEventListener('ended', () => audioSource.pause(), { once: true });
 }
 
-/* Handle Episode Choice */
+/* Handle episode choice */
 function handleEpisodeChoice(event) {
   const episodeKey = event.currentTarget.dataset.episode;
   const { choiceButtonsWrapper, mainPlayerWrapper, audioSource, timeDisplay, progress, playBtn, pauseBtn } = getEpisodeElements();
@@ -63,135 +58,116 @@ function handleEpisodeChoice(event) {
 
   audioSource.src = AUDIO_PATHS[episodeKey];
   audioSource.load();
-  audioSource.play().catch(() => {});
-
-  timeDisplay.textContent = "0:00 / Loading...";
-  progress.style.width = "0%";
+  audioSource.play();
 
   playBtn.classList.add('hidden');
   pauseBtn.classList.remove('hidden');
 
   audioSource.onplaying = () => { playBtn.classList.add('hidden'); pauseBtn.classList.remove('hidden'); };
   audioSource.onpause = () => { playBtn.classList.remove('hidden'); pauseBtn.classList.add('hidden'); };
-  audioSource.onended = () => { playBtn.classList.remove('hidden'); pauseBtn.classList.add('hidden'); };
 }
 
-/* Update Audio Progress */
+/* Update time+progress */
 function updatePlayerState() {
   const { audioSource, timeDisplay, progress } = getEpisodeElements();
-
-  if (!audioSource.duration || !isFinite(audioSource.duration)) return;
-
+  if (!audioSource.duration) return;
   timeDisplay.textContent = `${formatTime(audioSource.currentTime)} / ${formatTime(audioSource.duration)}`;
   progress.style.width = `${(audioSource.currentTime / audioSource.duration) * 100}%`;
 }
 
-/* Reset Player */
+/* Reset player */
 function resetPodcastPlayer() {
   const { introStartWrapper, choiceButtonsWrapper, mainPlayerWrapper, audioSource, timeDisplay, progress } = getEpisodeElements();
 
   audioSource.pause();
   audioSource.src = AUDIO_PATHS.intro;
-  audioSource.load();
   audioSource.currentTime = 0;
 
   introStartWrapper.classList.remove('hidden');
   choiceButtonsWrapper.classList.remove('visible');
   mainPlayerWrapper.classList.add('hidden');
 
-  timeDisplay.textContent = "0:00 / 0:00";
-  progress.style.width = "0%";
+  timeDisplay.textContent = '0:00 / 0:00';
+  progress.style.width = '0%';
 }
 
-/* Initialize Podcast Audio Controls */
+/* Init audio buttons */
 function initializeAudioControls() {
   const { audioSource, playBtn, pauseBtn, startOverBtn } = getEpisodeElements();
 
-  const introStartBtn = document.getElementById('intro-start-btn');
-  introStartBtn.addEventListener('click', startIntro);
+  document.getElementById('intro-start-btn').addEventListener('click', startIntro);
+  document.querySelectorAll('.choice-btn').forEach(btn => btn.addEventListener('click', handleEpisodeChoice));
 
-  document.querySelectorAll('.choice-btn').forEach(btn => {
-    btn.addEventListener('click', handleEpisodeChoice);
-  });
-
+  startOverBtn.addEventListener('click', resetPodcastPlayer);
   playBtn.addEventListener('click', () => audioSource.play());
   pauseBtn.addEventListener('click', () => audioSource.pause());
-  startOverBtn.addEventListener('click', resetPodcastPlayer);
 
   audioSource.addEventListener('timeupdate', updatePlayerState);
 }
 
-/* Clone Templates */
-function getTemplateClone(id) {
-  return document.getElementById(id).content.cloneNode(true);
-}
-
-/* Render About Page */
+/* Render About page */
 function renderAboutPage() {
-  const page = getTemplateClone('about-template');
+  const page = document.getElementById('about-template').content.cloneNode(true);
   const teamGrid = page.querySelector('#team-grid-placeholder');
 
-  teamGrid.innerHTML = "";
-
   teamMembers.forEach(member => {
-    const card = getTemplateClone('team-card-template');
-    card.querySelector('.profile-img').src = `photo/${member.image}`;
+    const card = document.getElementById('team-card-template').content.cloneNode(true);
     card.querySelector('[data-name-target]').textContent = member.name;
     card.querySelector('[data-role-target]').textContent = member.role;
     card.querySelector('[data-bio-target]').textContent = member.bio;
-
+    card.querySelector('.profile-img').src = `photo/${member.image}`;
     teamGrid.appendChild(card);
   });
 
   return page;
 }
 
-/* Render BTS Page */
-function renderBTSPage() {
-  return getTemplateClone('bts-template');
-}
-
-/* Render Podcast Page */
+/* Page navigation */
 function renderPodcastPage() {
-  return getTemplateClone('podcast-template');
+  return document.getElementById('podcast-template').content.cloneNode(true);
 }
 
-/* Navigation Handler */
+function renderBTSPage() {
+  return document.getElementById('bts-template').content.cloneNode(true);
+}
+
 function showPage(pageName) {
-  const homePage = document.getElementById('home-page');
-  let content;
+  const contentContainer = document.getElementById('content-container');
+  const homePageContent = document.getElementById('home-page');
+  let contentNode;
+  let loadAudio = false;
 
-  if (pageName === "home") content = homePage;
-  if (pageName === "podcast") content = renderPodcastPage();
-  if (pageName === "about") content = renderAboutPage();
-  if (pageName === "bts") content = renderBTSPage();
-
-  contentContainer.innerHTML = "";
-  contentContainer.appendChild(content);
-
-  if (pageName === "podcast") {
-    const { audioSource } = getEpisodeElements();
-    audioSource.pause();
-    audioSource.src = AUDIO_PATHS.intro;
-    audioSource.load();
-    initializeAudioControls();
+  if (pageName === 'home') {
+    contentNode = homePageContent;
+  } else if (pageName === 'podcast') {
+    contentNode = renderPodcastPage();
+    loadAudio = true;
+  } else if (pageName === 'about') {
+    contentNode = renderAboutPage();
+  } else if (pageName === 'bts') {
+    contentNode = renderBTSPage();
   }
 
+  contentContainer.innerHTML = '';
+  contentContainer.appendChild(contentNode);
+
+  if (loadAudio) initializeAudioControls();
+
   document.querySelectorAll('.nav-link').forEach(link => {
-    link.classList.toggle('active', link.dataset.page === pageName);
+    link.classList.remove('active');
+    if (link.dataset.page === pageName) link.classList.add('active');
   });
 }
 
-/* Header Shadow On Scroll */
+/* Header shadow */
 function handleScrollShadow() {
   const header = document.getElementById('main-header');
-  if (window.scrollY > 10) header.classList.add("header-scrolled");
-  else header.classList.remove("header-scrolled");
+  if (window.scrollY > 10) header.classList.add('header-scrolled');
+  else header.classList.remove('header-scrolled');
 }
-
 document.addEventListener('scroll', handleScrollShadow);
 
-/* Set Home as Active on Load */
+/* Default active tab */
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelector('.nav-link[data-page="home"]').classList.add('active');
 });
